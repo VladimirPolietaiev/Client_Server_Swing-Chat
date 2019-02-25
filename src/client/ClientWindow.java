@@ -45,10 +45,13 @@ public class ClientWindow extends JFrame {
         setTitle("Client");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jtaTextAreaMessage = new JTextArea();
+        jtaTextAreaMessage.setBackground( Color.black );
+        jtaTextAreaMessage.setForeground( Color.green );
         jtaTextAreaMessage.setEditable(false);
         jtaTextAreaMessage.setLineWrap(true);
         JScrollPane jsp = new JScrollPane(jtaTextAreaMessage);
         add(jsp, BorderLayout.CENTER);
+
         // label, который будет отражать количество клиентов в чате
         JLabel jlNumberOfClients = new JLabel("Количество клиентов в чате: ");
         add(jlNumberOfClients, BorderLayout.NORTH);
@@ -58,6 +61,8 @@ public class ClientWindow extends JFrame {
         bottomPanel.add(jbSendMessage, BorderLayout.EAST);
         jtfMessage = new JTextField("Введите ваше сообщение: ");
         bottomPanel.add(jtfMessage, BorderLayout.CENTER);
+        jtfMessage.setBackground( Color.black );
+        jtfMessage.setForeground( Color.green );
         jtfName = new JTextField("Введите ваше имя: ");
         bottomPanel.add(jtfName, BorderLayout.WEST);
         // обработчик события нажатия кнопки отправки сообщения
