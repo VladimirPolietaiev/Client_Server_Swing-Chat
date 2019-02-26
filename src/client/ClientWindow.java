@@ -25,6 +25,8 @@ public class ClientWindow extends JFrame {
     private JTextArea jtaTextAreaMessage;
     // имя клиента
     private String clientName = "";
+    private String fileName;
+
     // получаем имя клиента
     public String getClientName() {
         return this.clientName;
@@ -151,8 +153,37 @@ public class ClientWindow extends JFrame {
         String messageStr = jtfName.getText() + ": " + jtfMessage.getText();
         // отправляем сообщение
         outMessage.println(messageStr);
+        writeLog( fileName, messageStr );
         outMessage.flush();
         jtfMessage.setText("");
+    }
+
+
+    public static void writeLog(String fileName, String text) {
+        //Определяем файл
+        fileName = "fileLog.txt";
+        File file = new File(fileName);
+
+        try {
+            //проверяем, что если файл не существует то создаем его
+            if(!file.exists()){
+                file.createNewFile();
+            }
+
+            //PrintWriter обеспечит возможности записи в файл
+            PrintWriter out = new PrintWriter(file.getAbsoluteFile());
+
+            try {
+                //Записываем текст у файл
+                out.print(text);
+            } finally {
+                //После чего мы должны закрыть файл
+                //Иначе файл не запишется
+                out.close();
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
