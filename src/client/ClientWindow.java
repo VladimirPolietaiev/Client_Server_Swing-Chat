@@ -1,6 +1,5 @@
 package client;
 
-import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,6 +12,8 @@ public class ClientWindow extends JFrame {
     private static final String SERVER_HOST = "localhost";
     // порт
     private static final int SERVER_PORT = 3443;
+    private static String fileName ="fileLog.txt";
+    private static File file;
     // клиентский сокет
     private Socket clientSocket;
     // входящее сообщение
@@ -25,7 +26,6 @@ public class ClientWindow extends JFrame {
     private JTextArea jtaTextAreaMessage;
     // имя клиента
     private String clientName = "";
-    private String fileName;
 
     // получаем имя клиента
     public String getClientName() {
@@ -74,7 +74,11 @@ public class ClientWindow extends JFrame {
                 // если имя клиента, и сообщение непустые, то отправляем сообщение
                 if (!jtfMessage.getText().trim().isEmpty() && !jtfName.getText().trim().isEmpty()) {
                     clientName = jtfName.getText();
-                    sendMsg();
+                    try {
+                        sendMsg();
+                    } catch (IOException e1) {
+                        e1.printStackTrace ( );
+                    }
                     // фокус на текстовое поле с сообщением
                     jtfMessage.grabFocus();
                 }
@@ -148,12 +152,16 @@ public class ClientWindow extends JFrame {
     }
 
     // отправка сообщения
-    public void sendMsg() {
+    public void sendMsg() throws IOException {
         // формируем сообщение для отправки на сервер
         String messageStr = jtfName.getText() + ": " + jtfMessage.getText();
         // отправляем сообщение
         outMessage.println(messageStr);
-        writeLog( fileName, messageStr );
+        try {
+            update ( fileName, messageStr);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace ( );
+        }
         outMessage.flush();
         jtfMessage.setText("");
     }
@@ -161,7 +169,6 @@ public class ClientWindow extends JFrame {
 
     public static void writeLog(String fileName, String text) {
         //Определяем файл
-        fileName = "fileLog.txt";
         File file = new File(fileName);
 
         try {
@@ -176,6 +183,7 @@ public class ClientWindow extends JFrame {
             try {
                 //Записываем текст у файл
                 out.print(text);
+                out.append("\n");
             } finally {
                 //После чего мы должны закрыть файл
                 //Иначе файл не запишется
@@ -184,6 +192,52 @@ public class ClientWindow extends JFrame {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String read(String fileName) throws IOException {
+        //Этот спец. объект для построения строки
+        StringBuilder sb = new StringBuilder();
+        File file = new File(fileName);
+        exists(fileName);
+
+        try {
+            //Объект для чтения файла в буфер
+            BufferedReader in = new BufferedReader(new FileReader( file.getAbsoluteFile()));
+            try {
+                //В цикле построчно считываем файл
+                String s;
+                while ((s = in.readLine()) != null) {
+                    sb.append(s);
+                    sb.append("\n");
+                }
+            } finally {
+                //Также не забываем закрыть файл
+                in.close();
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Возвращаем полученный текст с файла
+        return sb.toString();
+    }
+
+
+    private static void exists(String fileName) throws IOException {
+        File file = new File(fileName);
+        if (!file.exists()){
+            file.createNewFile();
+        }
+    }
+
+    public static void update(String fileName, String newText) throws IOException {
+        exists(fileName);
+        StringBuilder sb = new StringBuilder();
+        String oldFile = read(fileName);
+        sb.append(oldFile);
+        sb.append(newText);
+
+        writeLog(fileName, sb.toString());
     }
 }
 
