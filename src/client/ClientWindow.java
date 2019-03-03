@@ -57,10 +57,17 @@ public class ClientWindow extends JFrame {
         // label, который будет отражать количество клиентов в чате
         JLabel jlNumberOfClients = new JLabel("Количество клиентов в чате: ");
         add(jlNumberOfClients, BorderLayout.NORTH);
+
+
         JPanel bottomPanel = new JPanel(new BorderLayout());
         add(bottomPanel, BorderLayout.SOUTH);
         JButton jbSendMessage = new JButton("Отправить");
-        bottomPanel.add(jbSendMessage, BorderLayout.EAST);
+        JButton jLogButton = new JButton("Log file");
+        bottomPanel.add(jbSendMessage,BorderLayout.EAST);
+        bottomPanel.add(jLogButton,BorderLayout.SOUTH);
+
+
+
         jtfMessage = new JTextField("Введите ваше сообщение: ");
         bottomPanel.add(jtfMessage, BorderLayout.CENTER);
         jtfMessage.setBackground( Color.black );
@@ -166,7 +173,6 @@ public class ClientWindow extends JFrame {
         jtfMessage.setText("");
     }
 
-
     public static void writeLog(String fileName, String text) {
         //Определяем файл
         File file = new File(fileName);
@@ -178,12 +184,10 @@ public class ClientWindow extends JFrame {
             }
 
             //PrintWriter обеспечит возможности записи в файл
-            PrintWriter out = new PrintWriter(file.getAbsoluteFile());
-
+            PrintWriter out = new PrintWriter(new FileOutputStream ( file ) );
             try {
                 //Записываем текст у файл
-                out.print(text);
-                out.append("\n");
+                out.write(text);
             } finally {
                 //После чего мы должны закрыть файл
                 //Иначе файл не запишется
