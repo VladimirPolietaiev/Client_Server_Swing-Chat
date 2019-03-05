@@ -66,6 +66,25 @@ public class ClientWindow extends JFrame {
         bottomPanel.add(jbSendMessage,BorderLayout.EAST);
         bottomPanel.add(jLogButton,BorderLayout.SOUTH);
 
+        jLogButton.addActionListener ( new ActionListener ( ) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame logFrame = new JFrame ( "Log File" );
+                setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                logFrame.setSize ( 400,400 );
+                jtaTextAreaMessage = new JTextArea();
+                jtaTextAreaMessage.setBackground( Color.black );
+                jtaTextAreaMessage.setForeground( Color.green );
+                jtaTextAreaMessage.setEditable(false);
+                jtaTextAreaMessage.setLineWrap(true);
+                JScrollPane jspl = new JScrollPane(jtaTextAreaMessage);
+                add(jspl, BorderLayout.CENTER);
+
+//                logFrame.pack ();
+                logFrame.setVisible ( true );
+            }
+        } );
+
 
 
         jtfMessage = new JTextField("Введите ваше сообщение: ");
