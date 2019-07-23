@@ -4,19 +4,25 @@ import java.sql.*;
 
 public class DataBaseLogger {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        getDbConn ( );
+//        getDbConn ( );
 
-        createTableDb("CREATE TABLE IF NOT EXISTS  REGISTRATION (id INTEGER not NULL," +
+        createTableDb("CREATE TABLE IF NOT EXISTS  REGISTRATION (" +
+                " id INTEGER not NULL," +
                 " first VARCHAR(255)," +
                 " last VARCHAR(255)," +
                 " age INTEGER, " +
                 " PRIMARY KEY ( id ))");
 
 
-//        addDataBase ( "INSERT INTO REGISTRATION VALUES (107, 'Zara', 'Ali', 18)" );
+//        addDataBase ( "INSERT INTO Registration VALUES (100, 'Zara', 'Ali', 18)" );
+//        addDataBase ( "INSERT INTO Registration VALUES (101, 'Zara', 'Ali', 19)" );
+//        addDataBase ( "INSERT INTO Registration VALUES (102, 'Zara', 'Ali', 18)" );
+//        addDataBase ( "INSERT INTO Registration VALUES (103, 'Zara', 'Ali', 17)" );
+//        addDataBase ( "INSERT INTO Registration VALUES (104, 'Zara5', 'Ali', 16)" );
+
         // sql = "INSERT INTO Registration " + "VALUES (100, 'Zara', 'Ali', 18)";
         // sql = "INSERT INTO Registration " + "VALUES (101, 'Mahnaz', 'Fatma', 25)";
-//        updataDb("UPDATE Registration \" + \"SET first = 'olik25' WHERE id in (105)");
+        updataDb("UPDATE Registration SET first = 'olik27' WHERE id in (107)");
 
 //        deleteDataUS("DELETE FROM REGISTRATION WHERE ID = 107");
 
@@ -26,7 +32,7 @@ public class DataBaseLogger {
 
     }
 
-    public static Connection getDbConn( ) {
+    private static Connection getDbConn( ) {
         final String JDBC_DRIVER = "org.h2.Driver";
         final String DB_URL = "jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
         try {
@@ -43,18 +49,18 @@ public class DataBaseLogger {
         return dbConn;
     }
 
-    public static Statement getStmt() throws SQLException {
+    private static Statement getStmt() throws SQLException {
         Statement stmt = null;
         stmt = getDbConn ( ).createStatement ( );
         return stmt;
     }
 
-    public static void createTableDb(String sql) throws SQLException {
+    private static void createTableDb(String sql) throws SQLException {
             getStmt().executeUpdate ( sql );
             System.out.println("Created table in given database...");
     }
 
-    public static void addDataBase(String sql) throws SQLException {
+    private static void addDataBase(String sql) throws SQLException {
         getStmt().executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
         getDbConn ( ).commit ( );
@@ -62,11 +68,12 @@ public class DataBaseLogger {
 
     }
 
-    public static void updataDb(String sql) throws SQLException {
+    private static void updataDb(String sql) throws SQLException {
             getStmt().executeUpdate(sql);
+            System.out.println ( "Update DataBase into the table..." );
     }
 
-    public static void closeDataBase( ) {
+    private static void closeDataBase( ) {
         try {
             if (getDbConn ( ) != null) getDbConn ( ).close ( );
         } catch (SQLException se) {
@@ -79,14 +86,16 @@ public class DataBaseLogger {
         }
     }
 
-    public static void readTableDB(String sql) throws SQLException, ClassNotFoundException {
+    private static void readTableDB(String sql) throws SQLException {
         // STEP 4: Extract data from result set
-            while(getResultSet(sql).next()) {
+
+        ResultSet rs = getResultSet(sql);
+            while(rs.next()) {
                 // Retrieve by column name
-                int id  = getResultSet(sql).getInt("id");
-                int age = getResultSet(sql).getInt("age");
-                String first = getResultSet(sql).getString("first");
-                String last = getResultSet(sql).getString("last");
+                int id=rs.getInt("id");
+                int age=rs.getInt("age");
+                String first=rs.getString("first");
+                String last=rs.getString("last");
                 // Display values
                 System.out.print("ID: " + id);
                 System.out.print(", Age: " + age);
@@ -95,13 +104,13 @@ public class DataBaseLogger {
             }
     }
 
-    public static ResultSet getResultSet(String sql) throws SQLException {
+    private static ResultSet getResultSet(String sql) throws SQLException {
             ResultSet rs = null;
             rs = getStmt().executeQuery (sql);
             return rs;
     }
 
-    public static void deleteDataUS(String sql) throws SQLException {
+    private static void deleteDataUS(String sql) throws SQLException {
             getStmt().executeUpdate(sql);
     }
 
