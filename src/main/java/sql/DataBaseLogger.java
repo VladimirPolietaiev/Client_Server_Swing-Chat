@@ -18,15 +18,15 @@ public class DataBaseLogger {
 //        addDataBase ( "INSERT INTO Registration VALUES (101, 'Zara', 'Ali', 19)" );
 //        addDataBase ( "INSERT INTO Registration VALUES (102, 'Zara', 'Ali', 18)" );
 //        addDataBase ( "INSERT INTO Registration VALUES (103, 'Zara', 'Ali', 17)" );
-//        addDataBase ( "INSERT INTO Registration VALUES (104, 'Zara5', 'Ali', 16)" );
+        addDataBase ( "Registration", 105, "Zara", "Ali", 16);
 
         // sql = "INSERT INTO Registration " + "VALUES (100, 'Zara', 'Ali', 18)";
         // sql = "INSERT INTO Registration " + "VALUES (101, 'Mahnaz', 'Fatma', 25)";
-        updataDb("UPDATE Registration SET first = 'olik27' WHERE id in (107)");
+//        updataDb("UPDATE Registration SET first = 'olik27' WHERE id in (107)");
 
 //        deleteDataUS("DELETE FROM REGISTRATION WHERE ID = 107");
 
-        readTableDB("SELECT id, first, last, age FROM Registration");
+        readTableDB( "id", "first", "last", "age", "Registration");
         closeDataBase ();
 
 
@@ -60,7 +60,9 @@ public class DataBaseLogger {
             System.out.println("Created table in given database...");
     }
 
-    private static void addDataBase(String sql) throws SQLException {
+    private static void addDataBase(String nameTable, Integer idSet, String firstSet, String lastSet, Integer ageSet) throws SQLException {
+
+        String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ firstSet + "'" + ", " + "'" + lastSet + "'" + ", " + ageSet + " )";
         getStmt().executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
         getDbConn ( ).commit ( );
@@ -86,9 +88,15 @@ public class DataBaseLogger {
         }
     }
 
-    private static void readTableDB(String sql) throws SQLException {
+    private static void readTableDB(String idSet, String firstSet, String lastSet, String ageSet, String nameTable ) throws SQLException {
         // STEP 4: Extract data from result set
+//        String nameTable = null;
+//        String firstSet = null;
+//        String lastSet = null;
+//        Integer idSet = null;
+//        Integer ageSet = null;
 
+        String sql = "SELECT " + idSet + ", " + firstSet + ", " + lastSet + ", " + ageSet + " " + "FROM " + nameTable;
         ResultSet rs = getResultSet(sql);
             while(rs.next()) {
                 // Retrieve by column name
@@ -101,6 +109,7 @@ public class DataBaseLogger {
                 System.out.print(", Age: " + age);
                 System.out.print(", First: " + first);
                 System.out.println(", Last: " + last);
+
             }
     }
 
