@@ -22,11 +22,12 @@ public class DataBaseLogger {
 //        addDataBase ( "Registration", 105, "Zara", "Ali", 16);
 
 
-        updataDb("Registration","last","lik",104);
+//        updataDb("Registration","last","lik",104);
 
-        //        deleteDataUS("DELETE FROM REGISTRATION WHERE ID = 107");
+        deleteDataUS("REGISTRATION", 106);
 
         readTableDB( "id", "first", "last", "age", "Registration");
+
         closeDataBase ();
 
 
@@ -113,7 +114,8 @@ public class DataBaseLogger {
             return rs;
     }
 
-    private static void deleteDataUS(String sql) throws SQLException {
+    private static void deleteDataUS(String nameTable, Integer idSet) throws SQLException {
+        String sql ="DELETE FROM " + nameTable + " WHERE ID = " + idSet ;
             getStmt().executeUpdate(sql);
     }
 
