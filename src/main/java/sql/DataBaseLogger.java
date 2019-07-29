@@ -3,10 +3,10 @@ package main.java.sql;
 import java.sql.*;
 
 public class DataBaseLogger {
+    private static Statement stmt;
 
-
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-
+    public static void main(String[] args) throws SQLException {
+        getStmt ();
         createTableDb("CREATE TABLE IF NOT EXISTS  REGISTRATION (" +
                 " id INTEGER not NULL," +
                 " first VARCHAR(255)," +
@@ -29,8 +29,6 @@ public class DataBaseLogger {
         readTableDB( "id", "first", "last", "age", "Registration");
 
         closeDataBase ();
-
-
     }
 
     private static Connection getDbConn( ) {
@@ -51,19 +49,18 @@ public class DataBaseLogger {
     }
 
     private static Statement getStmt() throws SQLException {
-        Statement stmt = null;
         stmt = getDbConn ( ).createStatement ( );
         return stmt;
     }
 
     private static void createTableDb(String sql) throws SQLException {
-            getStmt().executeUpdate ( sql );
+            stmt.executeUpdate ( sql );
             System.out.println("Created table in given database...");
     }
 
     private static void addDataBase(String nameTable, Integer idSet, String firstSet, String lastSet, Integer ageSet) throws SQLException {
         String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ firstSet + "'" + ", " + "'" + lastSet + "'" + ", " + ageSet + " )";
-        getStmt().executeUpdate ( sql );
+        stmt.executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
         getDbConn ( ).commit ( );
         getDbConn ( ).rollback ( );
@@ -71,7 +68,7 @@ public class DataBaseLogger {
 
     private static void updataDb(String nameTable, String firstSet, String updataString,  Integer idSet) throws SQLException {
         String sql = "UPDATE " + nameTable +" SET " + firstSet + " = "+ "'" +updataString + "' WHERE id"  + " in (" + idSet + ")";
-            getStmt().executeUpdate(sql);
+            stmt.executeUpdate(sql);
             System.out.println ( "Update DataBase into the table..." );
     }
 
@@ -82,15 +79,13 @@ public class DataBaseLogger {
             se.printStackTrace ( );
         }
         try {
-            if (getStmt() != null) getStmt().close ( );
+            if (stmt != null) stmt.close ( );
         } catch (SQLException se) {
             se.printStackTrace ( );
         }
     }
 
     private static void readTableDB(String idSet, String firstSet, String lastSet, String ageSet, String nameTable ) throws SQLException {
-        // STEP 4: Extract data from result set
-
         String sql = "SELECT " + idSet + ", " + firstSet + ", " + lastSet + ", " + ageSet + " " + "FROM " + nameTable;
         ResultSet rs = getResultSet(sql);
             while(rs.next()) {
@@ -104,19 +99,18 @@ public class DataBaseLogger {
                 System.out.print(", Age: " + age);
                 System.out.print(", First: " + first);
                 System.out.println(", Last: " + last);
-
             }
     }
 
     private static ResultSet getResultSet(String sql) throws SQLException {
             ResultSet rs = null;
-            rs = getStmt().executeQuery (sql);
+            rs = stmt.executeQuery (sql);
             return rs;
     }
 
     private static void deleteDataUS(String nameTable, Integer idSet) throws SQLException {
         String sql ="DELETE FROM " + nameTable + " WHERE ID = " + idSet ;
-            getStmt().executeUpdate(sql);
+            stmt.executeUpdate(sql);
     }
 
 }
