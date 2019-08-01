@@ -1,33 +1,40 @@
 package main.java.sql;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class DataBaseLogger {
     private static Statement stmt;
 
     public static void main(String[] args) throws SQLException {
         getStmt ();
-        createTableDb("CREATE TABLE IF NOT EXISTS  REGISTRATION (" +
+
+
+        createTableDb("CREATE TABLE IF NOT EXISTS  TABLELOG (" +
                 " id INTEGER not NULL," +
-                " first VARCHAR(255)," +
-                " last VARCHAR(255)," +
-                " age INTEGER, " +
+                " userName VARCHAR(255)," +
+                " userMessage VARCHAR(255)," +
+                " date DATE not NULL, " +
                 " PRIMARY KEY ( id ))");
 
 
-//        addDataBase ( "INSERT INTO Registration VALUES (100, 'Zara', 'Ali', 18)" );
-//        addDataBase ( "INSERT INTO Registration VALUES (101, 'Zara', 'Ali', 19)" );
-//        addDataBase ( "INSERT INTO Registration VALUES (102, 'Zara', 'Ali', 18)" );
-//        addDataBase ( "INSERT INTO Registration VALUES (103, 'Zara', 'Ali', 17)" );
-//        addDataBase ( "Registration", 105, "Zara", "Ali", 16);
-
+//        addDataBase ( "INSERT INTO Tablelog VALUES (100, 'Zara', 'Ali', 18)" );
+//        addDataBase ( "INSERT INTO Tablelog VALUES (101, 'Para', 'Ali', 19)" );
+//        addDataBase ( "INSERT INTO Tablelog VALUES (102, 'Vara', 'Ali', 18)" );
+//        addDataBase ( "INSERT INTO Tablelog VALUES (103, 'Sara', 'Ali', 17)" );
+          addDataBase ( "Tablelog", 100, "Zara", "Adfffffli", LocalDateTime.now ());
+//        addDataBase ( "Tablelog", 101, "Fara", "Adfffffli");
+//        addDataBase ( "Tablelog", 102, "Vara", "Adfffffli");
+//        addDataBase ( "Tablelog", 103, "Sara", "Adfffffli");
+//
+//        addDataBase ( "Tablelog", 105, "Fara", "Adfffffli", 16);
 
 //        updataDb("Registration","last","lik",104);
 
-        deleteDataUS("REGISTRATION", 106);
+//        deleteDataUS("REGISTRATION", 106);
 
-        readTableDB( "id", "first", "last", "age", "Registration");
-
+        readTableDB( "id", "userName", "userMessage", "Tablelog");
+        System.out.print("ID: " + dateTime());
         closeDataBase ();
     }
 
@@ -58,18 +65,25 @@ public class DataBaseLogger {
             System.out.println("Created table in given database...");
     }
 
-    private static void addDataBase(String nameTable, Integer idSet, String firstSet, String lastSet, Integer ageSet) throws SQLException {
-        String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ firstSet + "'" + ", " + "'" + lastSet + "'" + ", " + ageSet + " )";
+    private static void addDataBase(String nameTable, Integer idSet, String userNameSet, String userMessageSet, LocalDateTime dateTime) throws SQLException {
+
+        String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ userNameSet + "'" + ", " + "'" + userMessageSet + "'" + ", "+ dateTime () + ")";
         stmt.executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
         getDbConn ( ).commit ( );
         getDbConn ( ).rollback ( );
     }
 
-    private static void updataDb(String nameTable, String firstSet, String updataString,  Integer idSet) throws SQLException {
-        String sql = "UPDATE " + nameTable +" SET " + firstSet + " = "+ "'" +updataString + "' WHERE id"  + " in (" + idSet + ")";
+    private static void updataDb(String nameTable, String userNameSet, String updataString,  Integer idSet) throws SQLException {
+        String sql = "UPDATE " + nameTable +" SET " + userNameSet + " = "+ "'" +updataString + "' WHERE id"  + " in (" + idSet + ")";
             stmt.executeUpdate(sql);
             System.out.println ( "Update DataBase into the table..." );
+    }
+
+    private static String dateTime( ){
+        LocalDateTime dateTime = LocalDateTime.now ();
+        String dateTimeStr = String.format ( String.valueOf ( dateTime ) );
+        return dateTimeStr;
     }
 
     private static void closeDataBase( ) {
@@ -85,20 +99,21 @@ public class DataBaseLogger {
         }
     }
 
-    private static void readTableDB(String idSet, String firstSet, String lastSet, String ageSet, String nameTable ) throws SQLException {
-        String sql = "SELECT " + idSet + ", " + firstSet + ", " + lastSet + ", " + ageSet + " " + "FROM " + nameTable;
+    private static void readTableDB(String idSet, String userNameSet, String userMessageSet, String nameTable ) throws SQLException {
+        String sql = "SELECT " + idSet + ", " + userNameSet + ", " + userMessageSet + ", " + dateTime () + " " + "FROM " + nameTable;
         ResultSet rs = getResultSet(sql);
             while(rs.next()) {
                 // Retrieve by column name
                 int id=rs.getInt("id");
-                int age=rs.getInt("age");
-                String first=rs.getString("first");
-                String last=rs.getString("last");
+                String userName=rs.getString("userName");
+                String userMessage=rs.getString("userMessage");
+                String date=rs.getString("date");
+
                 // Display values
                 System.out.print("ID: " + id);
-                System.out.print(", Age: " + age);
-                System.out.print(", First: " + first);
-                System.out.println(", Last: " + last);
+                System.out.print(", date: " + date);
+                System.out.print(", userName: " + userName);
+                System.out.println(", userMessage: " + userMessage);
             }
     }
 
