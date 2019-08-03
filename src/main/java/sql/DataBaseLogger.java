@@ -38,7 +38,7 @@ public class DataBaseLogger {
         closeDataBase ();
     }
 
-    private static Connection getDbConn( ) {
+    public static Connection getDbConn() {
         final String JDBC_DRIVER = "org.h2.Driver";
         final String DB_URL = "jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
         try {
@@ -55,12 +55,12 @@ public class DataBaseLogger {
         return dbConn;
     }
 
-    private static Statement getStmt() throws SQLException {
+    public static Statement getStmt() throws SQLException {
         stmt = getDbConn ( ).createStatement ( );
         return stmt;
     }
 
-    private static void createTableDb(String sql) throws SQLException {
+    public static void createTableDb(String sql) throws SQLException {
             stmt.executeUpdate ( sql );
             System.out.println("Created table in given database...");
     }
