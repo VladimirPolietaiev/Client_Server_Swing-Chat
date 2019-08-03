@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DataBaseLoggerTest {
     @Test
-    public void multiplicationOfZeroIntegersShouldReturnZero() throws SQLException {
+    public void createTable() throws SQLException {
         //GIVEN
         DataBaseLogger dataBaseLogger = new DataBaseLogger();
         try {
