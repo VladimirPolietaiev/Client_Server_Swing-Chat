@@ -14,7 +14,7 @@ public class DataBaseLogger {
                 " id INTEGER not NULL," +
                 " userName VARCHAR(255)," +
                 " userMessage VARCHAR(255)," +
-                " date DATE not NULL, " +
+                " date TIMESTAMP, " +
                 " PRIMARY KEY ( id ))");
 
 
@@ -22,7 +22,7 @@ public class DataBaseLogger {
 //        addDataBase ( "INSERT INTO Tablelog VALUES (101, 'Para', 'Ali', 19)" );
 //        addDataBase ( "INSERT INTO Tablelog VALUES (102, 'Vara', 'Ali', 18)" );
 //        addDataBase ( "INSERT INTO Tablelog VALUES (103, 'Sara', 'Ali', 17)" );
-          addDataBase ( "Tablelog", 100, "Zara", "Adfffffli", LocalDateTime.now ());
+          addDataBase ( "Tablelog", 100, "Zara", "Adfffffli");
 //        addDataBase ( "Tablelog", 101, "Fara", "Adfffffli");
 //        addDataBase ( "Tablelog", 102, "Vara", "Adfffffli");
 //        addDataBase ( "Tablelog", 103, "Sara", "Adfffffli");
@@ -65,9 +65,8 @@ public class DataBaseLogger {
             System.out.println("Created table in given database...");
     }
 
-    private static void addDataBase(String nameTable, Integer idSet, String userNameSet, String userMessageSet, LocalDateTime dateTime) throws SQLException {
-
-        String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ userNameSet + "'" + ", " + "'" + userMessageSet + "'" + ", "+ dateTime () + ")";
+    private static void addDataBase(String nameTable, Integer idSet, String userNameSet, String userMessageSet) throws SQLException {
+        String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ userNameSet + "'" + ", " + "'" + userMessageSet + "'" + ", " + "'" + dateTime() + "'" + ")";
         stmt.executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
         getDbConn ( ).commit ( );
@@ -80,9 +79,12 @@ public class DataBaseLogger {
             System.out.println ( "Update DataBase into the table..." );
     }
 
-    private static String dateTime( ){
-        LocalDateTime dateTime = LocalDateTime.now ();
-        String dateTimeStr = String.format ( String.valueOf ( dateTime ) );
+    private static Timestamp dateTime( ){
+        /*
+        The TIMESTAMP data type is used for values that contain both date and time parts. TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC
+         */
+        Timestamp dateTimeStr = new Timestamp(System.currentTimeMillis());
+        //or new Timestamp(new Date.getTime());
         return dateTimeStr;
     }
 
