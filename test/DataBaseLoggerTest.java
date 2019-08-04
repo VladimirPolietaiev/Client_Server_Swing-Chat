@@ -52,7 +52,6 @@ public class DataBaseLoggerTest {
         assertFalse(isThereAreAnyRowInTable_2);
 
         //Подчистим после теста
-        //Неработает
         if (isThereAreAnyRowInTable_1) {
             String dropQuery = "DROP TABLE " + test_table_name;
             testDataBaseLogger.getStmt().executeUpdate(dropQuery);
