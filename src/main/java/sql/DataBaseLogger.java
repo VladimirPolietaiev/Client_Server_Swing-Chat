@@ -7,10 +7,11 @@ public class DataBaseLogger {
     private static Statement stmt;
 
     public static void main(String[] args) throws SQLException {
-        getStmt ();
+        DataBaseLogger dataBaseLogger = new DataBaseLogger();
+        dataBaseLogger.getStmt ();
 
 
-        createTableDb("CREATE TABLE IF NOT EXISTS  TABLELOG (" +
+        dataBaseLogger.createTableDb("CREATE TABLE IF NOT EXISTS  TABLELOG (" +
                 " id INTEGER not NULL," +
                 " userName VARCHAR(255)," +
                 " userMessage VARCHAR(255)," +
@@ -22,7 +23,7 @@ public class DataBaseLogger {
 //        addDataBase ( "INSERT INTO Tablelog VALUES (101, 'Para', 'Ali', 19)" );
 //        addDataBase ( "INSERT INTO Tablelog VALUES (102, 'Vara', 'Ali', 18)" );
 //        addDataBase ( "INSERT INTO Tablelog VALUES (103, 'Sara', 'Ali', 17)" );
-          addDataBase ( "Tablelog", 100, "Zara", "Adfffffli");
+        dataBaseLogger.addDataBase ( "Tablelog", 100, "Zara", "Adfffffli");
 //        addDataBase ( "Tablelog", 101, "Fara", "Adfffffli");
 //        addDataBase ( "Tablelog", 102, "Vara", "Adfffffli");
 //        addDataBase ( "Tablelog", 103, "Sara", "Adfffffli");
@@ -33,12 +34,12 @@ public class DataBaseLogger {
 
 //        deleteDataUS("REGISTRATION", 106);
 
-        readTableDB( "id", "userName", "userMessage", "Tablelog");
-        System.out.print("ID: " + dateTime());
-        closeDataBase ();
+        dataBaseLogger.readTableDB( "id", "userName", "userMessage", "Tablelog");
+        System.out.print("ID: " + dataBaseLogger.dateTime());
+        dataBaseLogger.closeDataBase ();
     }
 
-    public static Connection getDbConn() {
+    public Connection getDbConn() {
         final String JDBC_DRIVER = "org.h2.Driver";
         final String DB_URL = "jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
         try {
@@ -55,17 +56,17 @@ public class DataBaseLogger {
         return dbConn;
     }
 
-    public static Statement getStmt() throws SQLException {
+    public Statement getStmt() throws SQLException {
         stmt = getDbConn ( ).createStatement ( );
         return stmt;
     }
 
-    public static void createTableDb(String sql) throws SQLException {
+    public void createTableDb(String sql) throws SQLException {
             stmt.executeUpdate ( sql );
             System.out.println("Created table in given database...");
     }
 
-    private static void addDataBase(String nameTable, Integer idSet, String userNameSet, String userMessageSet) throws SQLException {
+    private void addDataBase(String nameTable, Integer idSet, String userNameSet, String userMessageSet) throws SQLException {
         String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ userNameSet + "'" + ", " + "'" + userMessageSet + "'" + ", " + "'" + dateTime() + "'" + ")";
         stmt.executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
@@ -73,13 +74,13 @@ public class DataBaseLogger {
         getDbConn ( ).rollback ( );
     }
 
-    private static void updataDb(String nameTable, String userNameSet, String updataString,  Integer idSet) throws SQLException {
+    private void updataDb(String nameTable, String userNameSet, String updataString,  Integer idSet) throws SQLException {
         String sql = "UPDATE " + nameTable +" SET " + userNameSet + " = "+ "'" +updataString + "' WHERE id"  + " in (" + idSet + ")";
             stmt.executeUpdate(sql);
             System.out.println ( "Update DataBase into the table..." );
     }
 
-    private static Timestamp dateTime( ){
+    private Timestamp dateTime( ){
         /*
         The TIMESTAMP data type is used for values that contain both date and time parts. TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC
          */
@@ -88,7 +89,7 @@ public class DataBaseLogger {
         return dateTimeStr;
     }
 
-    private static void closeDataBase( ) {
+    private void closeDataBase( ) {
         try {
             if (getDbConn ( ) != null) getDbConn ( ).close ( );
         } catch (SQLException se) {
@@ -101,7 +102,7 @@ public class DataBaseLogger {
         }
     }
 
-    private static void readTableDB(String idSet, String userNameSet, String userMessageSet, String nameTable ) throws SQLException {
+    private void readTableDB(String idSet, String userNameSet, String userMessageSet, String nameTable ) throws SQLException {
         String sql = "SELECT " + idSet + ", " + userNameSet + ", " + userMessageSet + ", " + dateTime () + " " + "FROM " + nameTable;
         ResultSet rs = getResultSet(sql);
             while(rs.next()) {
@@ -119,13 +120,13 @@ public class DataBaseLogger {
             }
     }
 
-    private static ResultSet getResultSet(String sql) throws SQLException {
+    private ResultSet getResultSet(String sql) throws SQLException {
             ResultSet rs = null;
             rs = stmt.executeQuery (sql);
             return rs;
     }
 
-    private static void deleteDataUS(String nameTable, Integer idSet) throws SQLException {
+    private void deleteDataUS(String nameTable, Integer idSet) throws SQLException {
         String sql ="DELETE FROM " + nameTable + " WHERE ID = " + idSet ;
             stmt.executeUpdate(sql);
     }
