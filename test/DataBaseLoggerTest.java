@@ -55,10 +55,11 @@ public class DataBaseLoggerTest {
         if (isThereAreAnyRowInTable_1) {
             String dropQuery = "DROP TABLE " + test_table_name;
             testDataBaseLogger.getStmt().executeUpdate(dropQuery);
-            if (!tables1.next()) {
-                System.out.println("Table " + test_table_name + " deleted in given database...");
-            } else {
+            Boolean isThereAreAnyRowInTable_1_1 = dbm.getTables(null, null, test_table_name, null).next();
+            if (isThereAreAnyRowInTable_1_1) {
                 System.out.println("Ooops, I can not delete " + test_table_name);
+            } else {
+                System.out.println("Table " + test_table_name + " deleted in given database...");
             }
         }
 
