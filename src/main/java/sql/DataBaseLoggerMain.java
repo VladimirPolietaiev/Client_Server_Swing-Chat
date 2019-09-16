@@ -6,8 +6,9 @@ public class DataBaseLoggerMain extends DataBaseLogger {
     public static void main(String[] args) throws SQLException {
 
         DataBaseLogger dataBaseLogger = new DataBaseLogger();
+        String DB_URL ="jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
         dataBaseLogger.getStmt();
-        dataBaseLogger.getDbConn ();
+        dataBaseLogger.getDbConn (DB_URL);
 
 //        addDataBase ( "Tablelog", 103, "Fara", "Adfffffli");
 
