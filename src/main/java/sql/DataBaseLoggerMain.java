@@ -7,8 +7,8 @@ public class DataBaseLoggerMain extends DataBaseLogger {
 
         DataBaseLogger dataBaseLogger = new DataBaseLogger();
         String DB_URL ="jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
-        dataBaseLogger.getStmt();
-        dataBaseLogger.getDbConn (DB_URL);
+        dataBaseLogger.setStmt(DB_URL);
+        dataBaseLogger.setDbConn (DB_URL);
 
 //        addDataBase ( "Tablelog", 103, "Fara", "Adfffffli");
 

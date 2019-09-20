@@ -4,6 +4,7 @@ import java.sql.*;
 
 public class DataBaseLogger {
     private static Statement stmt;
+    private static Connection dbConn;
     private static String DB_URL ="jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
 
 
@@ -34,9 +35,9 @@ public class DataBaseLogger {
         dataBaseLogger.closeDataBase ();
     }*/
 
-    public static Connection getDbConn(String DB_URL ) {
+    public static void setDbConn(String DB_URL ) {
         final String JDBC_DRIVER = "org.h2.Driver";
-        DB_URL = "jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
+//        DB_URL = "jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
         //db/stockExchange.mv.db
         //D:\github\java\ClientServer\db
         try {
@@ -44,22 +45,29 @@ public class DataBaseLogger {
         } catch (ClassNotFoundException e1) {
             e1.printStackTrace ( );
         }
-        Connection dbConn = null;
         try {
             dbConn = DriverManager.getConnection ( DB_URL );
         } catch (SQLException e1) {
             e1.printStackTrace ( );
         }
+
+    }
+
+    public static Connection getDbConn() {
         return dbConn;
     }
 
     public Statement getStmt() throws SQLException {
-        stmt = getDbConn (DB_URL).createStatement ( );
         return stmt;
     }
 
+    public void setStmt(String DB_URL) throws SQLException {
+        setDbConn (DB_URL);
+        stmt = getDbConn ().createStatement ( );
+    }
+
     public void createTableDb(String sql) throws SQLException {
-            stmt.executeUpdate ( sql );
+            getStmt().executeUpdate ( sql );
             System.out.println("Created table in given database...");
     }
 
@@ -67,8 +75,8 @@ public class DataBaseLogger {
         String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ userNameSet + "'" + ", " + "'" + userMessageSet + "'" + ", " + "'" + dateTime() + "'" + ")";
         stmt.executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
-        getDbConn (DB_URL ).commit ( );
-        getDbConn (DB_URL ).rollback ( );
+        getDbConn ().commit ( );
+        getDbConn ().rollback ( );
     }
 
     private static void updataDb(String nameTable, String userNameSet, String updataString, Integer idSet) throws SQLException {
@@ -88,12 +96,12 @@ public class DataBaseLogger {
 
     public void closeDataBase() {
         try {
-            if (getDbConn (DB_URL ) != null) getDbConn (DB_URL ).close ( );
+            if (getDbConn () != null) getDbConn ( ).close ( );
         } catch (SQLException se) {
             se.printStackTrace ( );
         }
         try {
-            if (stmt != null) stmt.close ( );
+            if (getStmt() != null) getStmt().close ( );
         } catch (SQLException se) {
             se.printStackTrace ( );
         }
