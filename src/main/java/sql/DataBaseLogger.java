@@ -71,7 +71,7 @@ public class DataBaseLogger {
             System.out.println("Created table in given database...");
     }
 
-    private static void addDataBase(String nameTable, Integer idSet, String userNameSet, String userMessageSet) throws SQLException {
+    public static void addDataBase(String nameTable, Integer idSet, String userNameSet, String userMessageSet) throws SQLException {
         String sql = "INSERT INTO " + nameTable + " VALUES " + "(" + idSet + ", " + "'"+ userNameSet + "'" + ", " + "'" + userMessageSet + "'" + ", " + "'" + dateTime() + "'" + ")";
         stmt.executeUpdate ( sql );
         System.out.println ( "Inserted records into the table..." );
@@ -129,13 +129,13 @@ public class DataBaseLogger {
             }
     }
 
-    private ResultSet getResultSet(String sql) throws SQLException {
+    public ResultSet getResultSet(String sql) throws SQLException {
             ResultSet rs = null;
             rs = stmt.executeQuery (sql);
             return rs;
     }
 
-    private static void deleteDataUS(String nameTable, Integer idSet) throws SQLException {
+    public static void deleteDataUS(String nameTable, Integer idSet) throws SQLException {
         String sql ="DELETE FROM " + nameTable + " WHERE ID = " + idSet ;
             stmt.executeUpdate(sql);
     }

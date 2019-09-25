@@ -23,6 +23,7 @@ public class DataBaseLoggerTest {
     @After
     public void tearDown( ) throws Exception {
         DataBaseLogger DataBaseLogger_Test = new DataBaseLogger ();
+
         DataBaseLogger_Test.closeDataBase ();
     }
 
@@ -117,6 +118,37 @@ public class DataBaseLoggerTest {
 //
 //        Assert.assertEquals(str,"TABLELOGTEST");
 //    }
+
+    @Test
+    public void addDataBaseTestCheckValueNameUser() throws SQLException {
+        DataBaseLogger DataBaseLogger_Test = new DataBaseLogger ();
+        String userNameSet;
+        String nameTable;
+        String resultCheck = null;
+        DataBaseLogger_Test.addDataBase ( "TABLELOGTEST", 1, "Fara---", "Adfffffli");
+        String sql = "SELECT * FROM TABLELOGTEST";
+        ResultSet rs = DataBaseLogger_Test.getResultSet(sql);
+
+        while(rs.next()) {
+            if (rs.getInt (1 ) == 1){
+                resultCheck = rs.getString ( 2 );
+            }
+            Assert.assertEquals("Fara---",resultCheck);
+        }
+        DataBaseLogger_Test.deleteDataUS("TABLELOGTEST", 1);;
+
+    }
+
+    @Test
+    public void deleteDataUSTest(){
+        DataBaseLogger DataBaseLogger_Test = new DataBaseLogger ();
+        try {
+            DataBaseLogger_Test.deleteDataUS("TABLELOGTEST", 103);
+        } catch (SQLException e) {
+            e.printStackTrace ( );
+        }
+    };
+
 
     @Test
     public void getDbConn( ) {
