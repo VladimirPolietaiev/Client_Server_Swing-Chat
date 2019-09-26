@@ -164,24 +164,39 @@ public class DataBaseLoggerTest {
             }
         }
         Assert.assertNotEquals ( CheckNameUser,resultCheckNameUser );
-    };
-
-
-    @Test
-    public void getDbConn( ) {
-    }
-
-    @Test
-    public void getStmt( ) {
     }
 
 
 
     @Test
-    public void closeDataBase( ) {
+    public void updataDbTestCheckNameUserBeforeAndAfterUpdate( ) throws SQLException {
+        DataBaseLogger DataBaseLogger_Test = new DataBaseLogger ();
+        DataBaseLogger_Test.addDataBase ( "TABLELOGTEST", 1, "Fara", "Adfffffli");
+        String sql = "SELECT * FROM TABLELOGTEST";
+        ResultSet rs = DataBaseLogger_Test.getResultSet(sql);
+        String CheckNameUser = null;
+        String resultCheckNameUser = null;
+        while(rs.next()) {
+            if (rs.getInt (1 ) == 1){
+                CheckNameUser = rs.getString ( 2 );
+            }
+        }
+        System.out.println("result in while after insert: " + CheckNameUser );
+        DataBaseLogger_Test.updataDb ( "TABLELOGTEST","userName","Supermen",1 );
+        ResultSet rsEnd = DataBaseLogger_Test.getResultSet(sql);
+        while(rsEnd.next()) {
+            if (rsEnd.getInt (1 ) == 1){
+                resultCheckNameUser = rsEnd.getString ( 2 );
+            }
+        }
+        System.out.println("result in while after updata: " + resultCheckNameUser );
+        Assert.assertNotEquals ( CheckNameUser,resultCheckNameUser );
+
+        try {
+            DataBaseLogger_Test.deleteDataUS("TABLELOGTEST", 1);
+        } catch (SQLException e) {
+            e.printStackTrace ( );
+        }
     }
 
-    @Test
-    public void readTableDB( ) {
-    }
 }
