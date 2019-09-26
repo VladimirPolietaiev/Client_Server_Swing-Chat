@@ -135,18 +135,35 @@ public class DataBaseLoggerTest {
             }
             Assert.assertEquals("Fara---",resultCheck);
         }
-        DataBaseLogger_Test.deleteDataUS("TABLELOGTEST", 1);;
+        DataBaseLogger_Test.deleteDataUS("TABLELOGTEST", 1);
 
     }
 
     @Test
-    public void deleteDataUSTest(){
+    public void deleteDataUSTestCheckNameUserBeforeAndAfterDelete() throws SQLException {
         DataBaseLogger DataBaseLogger_Test = new DataBaseLogger ();
+        DataBaseLogger_Test.addDataBase ( "TABLELOGTEST", 1, "Fara---", "Adfffffli");
+        String sql = "SELECT * FROM TABLELOGTEST";
+        ResultSet rs = DataBaseLogger_Test.getResultSet(sql);
+        String CheckNameUser = null;
+        String resultCheckNameUser = null;
+        while(rs.next()) {
+            if (rs.getInt (1 ) == 1){
+                CheckNameUser = rs.getString ( 2 );
+            }
+        }
         try {
-            DataBaseLogger_Test.deleteDataUS("TABLELOGTEST", 103);
+            DataBaseLogger_Test.deleteDataUS("TABLELOGTEST", 1);
         } catch (SQLException e) {
             e.printStackTrace ( );
         }
+        ResultSet rsEnd = DataBaseLogger_Test.getResultSet(sql);
+        while(rsEnd.next()) {
+            if (rsEnd.getInt (1 ) == 1){
+                resultCheckNameUser = rsEnd.getString ( 2 );
+            }
+        }
+        Assert.assertNotEquals ( CheckNameUser,resultCheckNameUser );
     };
 
 
