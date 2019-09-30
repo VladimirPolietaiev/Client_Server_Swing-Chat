@@ -28,7 +28,7 @@ public class DataBaseLogger {
 
 //        updataDb("Tablelog","userName","lik",103);
 
-//        deleteDataUS("Tablelog", 103);
+//        deleteData("Tablelog", 103);
 
         //Problem is somewhere below
         dataBaseLogger.readTableDB( "id", "userName", "userMessage", "Tablelog");
@@ -79,7 +79,7 @@ public class DataBaseLogger {
         getDbConn ().rollback ( );
     }
 
-    private static void updataDb(String nameTable, String userNameSet, String updataString, Integer idSet) throws SQLException {
+    public static void updataDb(String nameTable, String userNameSet, String updataString, Integer idSet) throws SQLException {
         String sql = "UPDATE " + nameTable +" SET " + userNameSet + " = "+ "'" +updataString + "' WHERE id"  + " in (" + idSet + ")";
             stmt.executeUpdate(sql);
             System.out.println ( "Update DataBase into the table..." );
@@ -135,7 +135,7 @@ public class DataBaseLogger {
             return rs;
     }
 
-    public static void deleteDataUS(String nameTable, Integer idSet) throws SQLException {
+    public static void deleteData(String nameTable, Integer idSet) throws SQLException {
         String sql ="DELETE FROM " + nameTable + " WHERE ID = " + idSet ;
             stmt.executeUpdate(sql);
     }
