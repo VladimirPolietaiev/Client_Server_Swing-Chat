@@ -1,6 +1,7 @@
 package main.java.sql.test;
 
 import main.java.sql.DataBaseLogger;
+import main.java.sql.getDataChat;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DataBaseLoggerTest {
+
+
 
     @Before
     public void setUp( ) throws Exception {
@@ -199,4 +202,10 @@ public class DataBaseLoggerTest {
         }
     }
 
+    @Test
+    public void getDataChat(){
+        System.out.println ( "test- " );
+        String getDataChatUsName= getDataChat.getDataUserName ();
+        System.out.println ( getDataChatUsName + "testRes" );
+    }
 }
