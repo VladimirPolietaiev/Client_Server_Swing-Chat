@@ -1,10 +1,13 @@
 package client;
 
+import main.java.sql.DataBaseLogger;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ClientWindow extends JFrame {
@@ -21,8 +24,8 @@ public class ClientWindow extends JFrame {
     // исходящее сообщение
     private PrintWriter outMessage;
     // следующие поля отвечают за элементы формы
-    private JTextField jtfMessage;
-    private JTextField jtfName;
+    public static JTextField jtfMessage;
+    private static JTextField jtfName;
     private JTextArea jtaTextAreaMessage;
     // имя клиента
     private String clientName = "";
@@ -88,7 +91,7 @@ public class ClientWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // если имя клиента, и сообщение непустые, то отправляем сообщение
                 if (!jtfMessage.getText().trim().isEmpty() && !jtfName.getText().trim().isEmpty()) {
-                    clientName = jtfName.getText();
+                    clientName = jtfName.getText();///////
                     try {
                         sendMsg();
                     } catch (IOException e1) {
@@ -129,7 +132,7 @@ public class ClientWindow extends JFrame {
                                 jlNumberOfClients.setText(inMes);
                             } else {
                                 // выводим сообщение
-                                jtaTextAreaMessage.append(inMes);
+                                jtaTextAreaMessage.append(inMes);////////
                                 // добавляем строку перехода
                                 jtaTextAreaMessage.append("\n");
                             }
@@ -170,6 +173,8 @@ public class ClientWindow extends JFrame {
     public void sendMsg() throws IOException {
         // формируем сообщение для отправки на сервер
         String messageStr = jtfName.getText() + ": " + jtfMessage.getText();
+//        String setNameUser =jtfName.getText ();
+//        String setMessageUser = jtfMessage.getText ();
         // отправляем сообщение
         outMessage.println(messageStr);
         try {
@@ -181,7 +186,7 @@ public class ClientWindow extends JFrame {
         jtfMessage.setText("");
     }
 
-    public static void writeLog(String fileName, String text) {
+    public static void writeLog(String fileName, String text) throws SQLException {
         //Определяем файл
         File file = new File(fileName);
 
@@ -196,6 +201,7 @@ public class ClientWindow extends JFrame {
             try {
                 //Записываем текст у файл
                 out.write(text);
+                writeDataBase();
             } finally {
                 //После чего мы должны закрыть файл
                 //Иначе файл не запишется
@@ -204,7 +210,24 @@ public class ClientWindow extends JFrame {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
+
+
+
+
     }
+
+    public static void writeDataBase( ) throws SQLException {
+            DataBaseLogger dataBaseLogger = new DataBaseLogger ();
+//            String setNameUser =jtfName.getText ();
+//            String setMessageUser = jtfMessage.getText ();
+//            Integer idSetBase = null;
+              dataBaseLogger.addDataBase ( "Tablelog", 1, "Fara", "Adfffffli");
+//            dataBaseLogger.addDataBase ( "Tablelog", idSetBase, setNameUser, setMessageUser);
+//            idSetBase = idSetBase + 1;
+    }
+
+
+
 
     public static String read(String fileName) throws IOException {
         //Этот спец. объект для построения строки
@@ -249,7 +272,11 @@ public class ClientWindow extends JFrame {
         sb.append(oldFile);
         sb.append(newText);
 
-        writeLog(fileName, sb.toString());
+        try {
+            writeLog(fileName, sb.toString());
+        } catch (SQLException e) {
+            e.printStackTrace ( );
+        }
     }
 }
 

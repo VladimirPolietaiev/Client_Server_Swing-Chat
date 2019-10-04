@@ -7,7 +7,7 @@ public class DataBaseLogger {
     private static Connection dbConn;
     private static String DB_URL ="jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
 
-
+//        createTableDb("CREATE TABLE IF NOT EXISTS  TABLELOG ( id INTEGER not NULL, userName VARCHAR(255), userMessage VARCHAR(255), date TIMESTAMP, PRIMARY KEY ( id ))");
 
     ///////// for example
 
@@ -38,7 +38,6 @@ public class DataBaseLogger {
     public static void setDbConn(String DB_URL ) {
         final String JDBC_DRIVER = "org.h2.Driver";
 //        DB_URL = "jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange";
-        //db/stockExchange.mv.db
         //D:\github\java\ClientServer\db
         try {
             Class.forName ( JDBC_DRIVER );
@@ -57,7 +56,7 @@ public class DataBaseLogger {
         return dbConn;
     }
 
-    public Statement getStmt() throws SQLException {
+    public static Statement getStmt( ) throws SQLException {
         return stmt;
     }
 
@@ -66,7 +65,7 @@ public class DataBaseLogger {
         stmt = getDbConn ().createStatement ( );
     }
 
-    public void createTableDb(String sql) throws SQLException {
+    public static void createTableDb(String sql) throws SQLException {
             getStmt().executeUpdate ( sql );
             System.out.println("Created table in given database...");
     }
