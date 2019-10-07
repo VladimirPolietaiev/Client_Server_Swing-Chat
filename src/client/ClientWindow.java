@@ -186,7 +186,7 @@ public class ClientWindow extends JFrame {
         jtfMessage.setText("");
     }
 
-    public static void writeLog(String fileName, String text) throws SQLException {
+    public void writeLog(String fileName, String text) throws SQLException {
         //Определяем файл
         File file = new File(fileName);
 
@@ -216,14 +216,24 @@ public class ClientWindow extends JFrame {
 
     }
 
-    public static void writeDataBase( ) throws SQLException {
+    public  void writeDataBase( ) throws SQLException {
             DataBaseLogger dataBaseLogger = new DataBaseLogger ();
-//            String setNameUser =jtfName.getText ();
-//            String setMessageUser = jtfMessage.getText ();
-//            Integer idSetBase = null;
-              dataBaseLogger.addDataBase ( "Tablelog", 1, "Fara", "Adfffffli");
-//            dataBaseLogger.addDataBase ( "Tablelog", idSetBase, setNameUser, setMessageUser);
-//            idSetBase = idSetBase + 1;
+
+            dataBaseLogger.setStmt("jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange");
+
+            String setNameUser =jtfName.getText ();
+            String setMessageUser = jtfMessage.getText ();
+            Integer countId = 1;
+
+//              dataBaseLogger.addDataBase ( "Tablelog", 1, "Fara", "Adfffffli");
+            dataBaseLogger.addDataBase ( "Tablelog", countId, setNameUser, setMessageUser);
+            countId++;
+
+    }
+
+    public Integer cointId( ){
+        Integer a = null;
+        return a++;
     }
 
 
@@ -265,7 +275,7 @@ public class ClientWindow extends JFrame {
         }
     }
 
-    public static void update(String fileName, String newText) throws IOException {
+    public void update(String fileName, String newText) throws IOException {
         exists(fileName);
         StringBuilder sb = new StringBuilder();
         String oldFile = read(fileName);
