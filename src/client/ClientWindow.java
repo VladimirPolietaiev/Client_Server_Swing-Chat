@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.Socket;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class ClientWindow extends JFrame {
     private PrintWriter outMessage;
     // следующие поля отвечают за элементы формы
     public static JTextField jtfMessage;
-    private static JTextField jtfName;
+    public static JTextField jtfName;
     private JTextArea jtaTextAreaMessage;
     // имя клиента
     private String clientName = "";
@@ -218,22 +219,24 @@ public class ClientWindow extends JFrame {
 
     public  void writeDataBase( ) throws SQLException {
             DataBaseLogger dataBaseLogger = new DataBaseLogger ();
-
             dataBaseLogger.setStmt("jdbc:h2:file:D:/github/java/ClientServer/db/stockExchange");
 
             String setNameUser =jtfName.getText ();
             String setMessageUser = jtfMessage.getText ();
-            Integer countId = 1;
 
-//              dataBaseLogger.addDataBase ( "Tablelog", 1, "Fara", "Adfffffli");
-            dataBaseLogger.addDataBase ( "Tablelog", countId, setNameUser, setMessageUser);
-            countId++;
-
+            dataBaseLogger.addDataBase ( "Tablelog", countIdDataBase(), setNameUser, setMessageUser);
     }
 
-    public Integer cointId( ){
-        Integer a = null;
-        return a++;
+    public int countIdDataBase() throws SQLException {
+        DataBaseLogger dataBaseLogger = new DataBaseLogger ();
+        String sql = "SELECT * FROM TABLELOG";
+        ResultSet rs = dataBaseLogger.getResultSet(sql);
+        int resultCheck = 0;
+        while(rs.next()) {
+            resultCheck = rs.getInt ( 1 );
+            resultCheck ++;
+        }
+        return resultCheck;
     }
 
 
