@@ -225,6 +225,7 @@ public class ClientWindow extends JFrame {
             String setMessageUser = jtfMessage.getText ();
 
             dataBaseLogger.addDataBase ( "Tablelog", countIdDataBase(), setNameUser, setMessageUser);
+            dataBaseLogger.closeDataBase ();
     }
 
     public int countIdDataBase() throws SQLException {
